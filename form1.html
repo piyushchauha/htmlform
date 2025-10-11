@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form1</title>
+  </head>
+  <body>
+    <div class="maincontainer">
+      <div class="subcontainer">
+        <form id="form1"></form>
+      </div>
+    </div>
+  </body>
+  <script>
+    let form = document.getElementById("form1");
+    const datainput = [
+      { label: "Name:", id: "name", type: "text" },
+      { label: "Email:", id: "email", type: "email" },
+      { label: "Contact:", id: "contact", type: "tel" },
+      { label: "Password:", id: "password", type: "password" },
+    ];
+
+    //Label
+    datainput.forEach((ele) => {
+      let label = document.createElement("label");
+      label.setAttribute("for", ele.id);
+      label.innerHTML = ele.label + "<br>";
+      let input = document.createElement("input");
+      input.setAttribute("type", ele.type);
+      input.setAttribute("id", ele.id);
+      form.append(label);
+      form.append(input);
+      form.append(document.createElement("br"));
+    });
+
+    //submit button
+    let sub = document.createElement("button");
+    sub.setAttribute("type", "submit");
+    sub.innerHTML = "Submit";
+    sub.style.marginTop = "10px";
+    form.append(sub);
+
+    document.getElementById("form1").addEventListener("submit", function (e) {
+      e.preventDefault();
+      let nam = document.getElementById("name").value;
+      let em = document.getElementById("email").value;
+      let cont = document.getElementById("contact").value;
+      let data = [];
+      data.push({ Name: nam, Email: em, Contact: cont });
+      console.log(data);
+    });
+  </script>
+</html>

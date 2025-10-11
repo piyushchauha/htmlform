@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+  </head>
+  <body>
+    <div class="maincontainer">
+      <div class="subcontainer">
+        <form id="form1"></form>
+        <div id="displaytable"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let data = [];
+    let form = document.getElementById("form1");
+
+    //Name label
+    let namelabel = document.createElement("label");
+    namelabel.setAttribute("for", "name");
+    namelabel.innerHTML = "Name:<br>";
+
+    //name input
+    let nam = document.createElement("input");
+    nam.setAttribute("type", "text");
+    nam.setAttribute("id", "name");
+
+    //email label
+    let emaillabel = document.createElement("label");
+    emaillabel.setAttribute("for", "name");
+    emaillabel.innerHTML = "Email:<br>";
+
+    //email input
+    let em = document.createElement("input");
+    em.setAttribute("type", "email");
+    em.setAttribute("id", "email");
+
+    //contact label
+    let contactlabel = document.createElement("label");
+    contactlabel.setAttribute("for", "name");
+    contactlabel.innerHTML = "Contact:<br>";
+
+    //contact input
+    let cont = document.createElement("input");
+    cont.setAttribute("type", "tel");
+    cont.setAttribute("id", "contact");
+
+    //submit button
+    let sub = document.createElement("button");
+    sub.setAttribute("type", "submit");
+    sub.innerHTML = "Submit";
+    sub.style.marginTop = "10px";
+
+    // }
+
+    //Table
+    let table = document.createElement("displaytable");
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+
+    let header = ["Name", "Email", "Contact"];
+    let tr = document.createElement("tr");
+    for (let i = 0; i < header.length; i++) {
+      let th = document.createElement("th");
+      th.style.border = "1px solid black";
+      th.innerHTML = header[i];
+      tr.append(th);
+    }
+    thead.append(tr);
+    table.append(thead);
+    table.append(tbody);
+
+    form.append(namelabel);
+    form.append(nam);
+    form.append(document.createElement("br"));
+    form.append(emaillabel);
+    form.append(em);
+    form.append(document.createElement("br"));
+    form.append(contactlabel);
+    form.append(cont);
+    form.append(document.createElement("br"));
+    form.append(sub);
+    form.append(document.createElement("br"));
+    form.append(table);
+
+    // sub.addEventListener("click", submitdata());
+
+    function triggertable() {
+      tbody.innerHTML = "";
+      for (let i = 0; i < data.length; i++) {
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        td1.style.border = "1px solid black";
+        td1.innerHTML = data[i].Name;
+        let td2 = document.createElement("td");
+        td2.style.border = "1px solid black";
+        td2.innerHTML = data[i].Email;
+        let td3 = document.createElement("td");
+        td3.style.border = "1px solid black";
+        td3.innerHTML = data[i].Contact;
+        tr.append(td1);
+        tr.append(td2);
+        tr.append(td3);
+        tbody.append(tr);
+        table.append(tbody);
+        form.append(table);
+      }
+    }
+    document.getElementById("form1").addEventListener("submit", function (e) {
+      e.preventDefault();
+      let nam = document.getElementById("name").value;
+      let em = document.getElementById("email").value;
+      let cont = document.getElementById("contact").value;
+
+      data.push({ Name: nam, Email: em, Contact: cont });
+      console.log(data);
+      triggertable();
+    });
+
+    //  function submitdata() {
+    //       let nam = document.getElementById("name").value;
+    //       let em = document.getElementById("email").value;
+    //       let cont = document.getElementById("contact").value;
+    //    console.log(nam);
+    //       data.push({ Name: nam, Email: em, Contact: cont });
+    //       console.log(data);
+    //       // triggertable();
+
+    // }
+
+    // document.getElementById("form1").addEventListener("submit", function (e) {
+    //   e.preventDefault();
+    //   let nam = document.getElementById("name").value;
+    //   let em = document.getElementById("email").value;
+    //   let cont = document.getElementById("contact").value;
+    //   let data = [];
+    //   data.push({ Name: nam, Email: em, Contact: cont });
+    //   console.log(data);
+    //   triggertable();
+    // });
+  </script>
+</html>
