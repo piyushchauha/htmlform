@@ -9,10 +9,12 @@
     <div class="maincontainer">
       <div class="subcontainer">
         <form id="form1"></form>
+        <div id="displaytable"></div>
       </div>
     </div>
   </body>
   <script>
+    let data = [];
     let form = document.getElementById("form1");
     const datainput = [
       { label: "Name:", id: "name", type: "text" },
@@ -22,33 +24,103 @@
     ];
 
     //Label
-    datainput.forEach((ele) => {
+    // datainput.forEach((ele) => {
+    //   let label = document.createElement("label");
+    //   label.setAttribute("for", ele.id);
+    //   label.innerHTML = ele.label + "<br>";
+    //   let input = document.createElement("input");
+    //   input.setAttribute("type", ele.type);
+    //   input.setAttribute("id", ele.id);
+    //   form.append(label);
+    //   form.append(input);
+    //   form.append(document.createElement("br"));
+    // });
+
+    for (i = 0; i < datainput.length; i++) {
       let label = document.createElement("label");
-      label.setAttribute("for", ele.id);
-      label.innerHTML = ele.label + "<br>";
+      label.setAttribute("for", datainput[i].id);
+      label.innerHTML = datainput[i].label + "<br>";
       let input = document.createElement("input");
-      input.setAttribute("type", ele.type);
-      input.setAttribute("id", ele.id);
+      input.setAttribute("type", datainput[i].type);
+      input.setAttribute("id", datainput[i].id);
       form.append(label);
       form.append(input);
       form.append(document.createElement("br"));
-    });
-
+    }
     //submit button
     let sub = document.createElement("button");
     sub.setAttribute("type", "submit");
     sub.innerHTML = "Submit";
     sub.style.marginTop = "10px";
+    sub.style.marginBottom = "10px";
     form.append(sub);
+    form.append(document.createElement("br"));
+    sub.addEventListener("click", submitdata);
 
-    document.getElementById("form1").addEventListener("submit", function (e) {
+    //table
+    let table = document.createElement("table");
+    document.getElementById("displaytable").append(table);
+    table.style.border = "1px solid black";
+    let thead = document.createElement("thead");
+    let tbody = document.createElement("tbody");
+
+    for (i = 0; i < datainput.length; i++) {
+      let th = document.createElement("th");
+      let tr = document.createElement("tr");
+      th.innerHTML = datainput[i].label;
+      th.style.border = "1px solid black";
+      thead.append(th);
+      th.append(tr);
+      table.append(thead);
+      table.append(tbody);
+    }
+    form.append(table);
+
+    function triggertable() {
+      tbody.innerHTML = "";
+
+      for (let i = 0; i < data.length; i++) {
+        let tr = document.createElement("tr");
+        for (let j = 0; j < datainput.length; j++) {
+          let td = document.createElement("td");
+          td.style.border = "1px solid black";
+          td.innerHTML += data[i][datainput[j].id] + " ";
+          tr.append(td);
+        }
+
+        tbody.append(tr);
+      }
+      table.append(tbody);
+    }
+
+    // document
+    //   .getElementById("form1")
+    //   .addEventListener("submit", (e) => onSubmit(e));
+    // function onSubmit(e) {
+    //   e.preventDefault();
+
+    //   myobject = {};
+
+    //   for (i = 0; i < datainput.length; i++) {
+    //     let val = document.getElementById(datainput[i].id).value;
+    //     myobject[datainput[i].id] = val;
+    //   }
+    //   data.push(myobject);
+    //   console.log(data);
+    //   triggertable();
+    // }
+    function submitdata(e) {
       e.preventDefault();
-      let nam = document.getElementById("name").value;
-      let em = document.getElementById("email").value;
-      let cont = document.getElementById("contact").value;
-      let data = [];
-      data.push({ Name: nam, Email: em, Contact: cont });
+      myobject = {};
+
+      for (i = 0; i < datainput.length; i++) {
+        let val = document.getElementById(datainput[i].id).value;
+        myobject[datainput[i].id] = val;
+        document.getElementById(datainput[i].id).value = "";
+      }
+      data.push(myobject);
       console.log(data);
-    });
+      triggertable();
+    }
   </script>
 </html>

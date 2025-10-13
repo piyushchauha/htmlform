@@ -52,11 +52,14 @@
     sub.setAttribute("type", "submit");
     sub.innerHTML = "Submit";
     sub.style.marginTop = "10px";
+    sub.style.marginBottom = "10px";
 
     // }
 
     //Table
-    let table = document.createElement("displaytable");
+    let table = document.createElement("table");
+    table.style.border = "1px solid black";
+    document.getElementById("displaytable").append(table);
     let thead = document.createElement("thead");
     let tbody = document.createElement("tbody");
 
@@ -85,7 +88,7 @@
     form.append(document.createElement("br"));
     form.append(table);
 
-    // sub.addEventListener("click", submitdata());
+    sub.addEventListener("click", submitdata);
 
     function triggertable() {
       tbody.innerHTML = "";
@@ -108,27 +111,30 @@
         form.append(table);
       }
     }
-    document.getElementById("form1").addEventListener("submit", function (e) {
+    // document.getElementById("form1").addEventListener("submit", function (e) {
+    //   e.preventDefault();
+    //   let nam = document.getElementById("name").value;
+    //   let em = document.getElementById("email").value;
+    //   let cont = document.getElementById("contact").value;
+
+    //   data.push({ Name: nam, Email: em, Contact: cont });
+    //   console.log(data);
+    //   triggertable();
+    // });
+
+    function submitdata(e) {
       e.preventDefault();
       let nam = document.getElementById("name").value;
       let em = document.getElementById("email").value;
       let cont = document.getElementById("contact").value;
-
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("contact").value = "";
+      console.log(nam);
       data.push({ Name: nam, Email: em, Contact: cont });
       console.log(data);
       triggertable();
-    });
-
-    //  function submitdata() {
-    //       let nam = document.getElementById("name").value;
-    //       let em = document.getElementById("email").value;
-    //       let cont = document.getElementById("contact").value;
-    //    console.log(nam);
-    //       data.push({ Name: nam, Email: em, Contact: cont });
-    //       console.log(data);
-    //       // triggertable();
-
-    // }
+    }
 
     // document.getElementById("form1").addEventListener("submit", function (e) {
     //   e.preventDefault();
