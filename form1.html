@@ -43,8 +43,31 @@
           { label: "Dance", value: "dance", name: "hobby", id: "dance" },
         ],
       },
+      {
+        label: "City",
+        id: "city",
+        type: "dropdown",
+        options: [
+          { label: "select city", value: "", name: "city", id: "selectcity" },
+          {
+            label: "Ahmedabad",
+            value: "ahmedabad",
+            name: "city",
+            id: "ahmedabad",
+          },
+          { label: "Rajkot", value: "rajkot", name: "city", id: "rajkot" },
+          { label: "Baroda", value: "baroda", name: "city", id: "baroda" },
+        ],
+      },
       { label: "Password:", id: "password", type: "password" },
-      // { label: "", id: "submitbtn", type: "submit" },
+      { label: "", id: "submitbtn", type: "submit" },
+      // {
+      //   label: "Actions",
+      //   options: [
+      //     { label: "Edit", id: "edit", type: "button" },
+      //     { label: "Delete", id: "delete", type: "button" },
+      //   ],
+      // },
     ];
 
     // const subbtn = document.getElementById("submitbtn");
@@ -66,6 +89,9 @@
 
     function createform() {
       for (i = 0; i < datainput.length; i++) {
+        if (datainput[i].label == "Actions") {
+          continue;
+        }
         let label = document.createElement("label");
         label.setAttribute("for", datainput[i].id);
         label.innerHTML = datainput[i].label + "<br>";
@@ -78,6 +104,26 @@
           form.append(input);
         }
 
+        if (datainput[i].type == "submit") {
+          let sub = document.getElementById("submitbtn");
+
+          sub.innerText = "Submit";
+          sub.style.marginBottom = "10px";
+          sub.addEventListener("click", submitdata);
+        }
+
+        if (datainput[i].type == "dropdown" && datainput[i].options) {
+          let select = document.createElement("select");
+          select.setAttribute("id", datainput[i].id);
+          form.append(select);
+          for (j = 0; j < datainput[i].options.length; j++) {
+            let option = document.createElement("option");
+            option.setAttribute("value", datainput[i].options[j].value);
+            option.setAttribute("id", datainput[i].options[j].id);
+            option.innerHTML = datainput[i].options[j].label;
+            select.append(option);
+          }
+        }
         form.append(document.createElement("br"));
 
         // if (datainput[i].type == "checkbox" || datainput[i].type == "radio") {
@@ -90,7 +136,10 @@
 
         // }
 
-        if (datainput[i].options) {
+        if (
+          (datainput[i].type == "radio" || datainput[i].type == "checkbox") &&
+          datainput[i].options
+        ) {
           for (j = 0; j < datainput[i].options.length; j++) {
             let optionlabel = document.createElement("label");
             optionlabel.innerHTML = datainput[i].options[j].label;
@@ -106,12 +155,12 @@
         }
       }
       // let sub = document.createElement("button");
-      sub.setAttribute("type", "submit");
-      sub.innerHTML = "Submit";
-      sub.style.marginTop = "10px";
-      sub.style.marginBottom = "10px";
-      form.append(sub);
-      form.append(document.createElement("br"));
+      // sub.setAttribute("type", "submit");
+      // sub.innerHTML = "Submit";
+      // sub.style.marginTop = "10px";
+      // sub.style.marginBottom = "10px";
+      // form.append(sub);
+      // form.append(document.createElement("br"));
       // sub.addEventListener("click", submitdata);
     }
     // submit button
@@ -131,6 +180,9 @@
       // let tbody = document.createElement("tbody");
 
       for (i = 0; i < datainput.length; i++) {
+        if (datainput[i].type == "submit") {
+          continue;
+        }
         let th = document.createElement("th");
         let tr = document.createElement("tr");
         th.innerHTML = datainput[i].label;
@@ -148,9 +200,14 @@
 
       for (let i = 0; i < data.length; i++) {
         let tr = document.createElement("tr");
+
         for (let j = 0; j < datainput.length; j++) {
           let td = document.createElement("td");
           td.style.border = "1px solid black";
+          if (datainput[j].type == "submit") {
+            continue;
+          }
+
           td.innerHTML += data[i][datainput[j].id] + " ";
           tr.append(td);
         }
@@ -201,7 +258,11 @@
       myobject = {};
 
       for (i = 0; i < datainput.length; i++) {
-        if (datainput[i].type == "checkbox" || datainput[i].type == "radio") {
+        if (
+          datainput[i].type == "checkbox" ||
+          datainput[i].type == "radio"
+          // datainput[i].type == "dropdown"
+        ) {
           myobject[datainput[i].id] = "";
           for (let z = 0; z < datainput[i].options.length; z++) {
             if (document.getElementById(datainput[i].options[z].id).checked) {
@@ -210,13 +271,19 @@
               }
               myobject[datainput[i].id] +=
                 document.getElementById(datainput[i].options[z].id).value + "";
+              document.getElementById(
+                datainput[i].options[z].id
+              ).checked = false;
+            } else if (datainput[i].type == "dropdown") {
+              myobject[datainput[i].id] = document.getElementById(
+                datainput[i].id
+              ).value;
             }
-
-            document.getElementById(datainput[i].options[z].id).checked = false;
           }
         } else {
           let val = document.getElementById(datainput[i].id).value;
           myobject[datainput[i].id] = val;
+          if (datainput[i].type == "submit") continue;
           document.getElementById(datainput[i].id).value = "";
         }
       }
@@ -224,7 +291,6 @@
       console.log(data);
       triggertable();
     }
-    sub.addEventListener("click", submitdata);
     createform();
     createtable();
   </script>
