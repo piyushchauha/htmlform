@@ -47,6 +47,61 @@
     cont.setAttribute("type", "tel");
     cont.setAttribute("id", "contact");
 
+    //Gender radio button
+    const male = document.createElement("input");
+    male.type = "radio";
+    male.name = "gender";
+    male.id = "male";
+    male.value = "Male";
+
+    const malelabel = document.createElement("label");
+    malelabel.maleFor = "Male";
+    malelabel.textContent = "Male";
+
+    const female = document.createElement("input");
+    female.type = "radio";
+    female.id = "male";
+    female.name = "gender";
+    female.value = "Female";
+
+    const femalelabel = document.createElement("label");
+    femalelabel.maleFor = "Female";
+    femalelabel.textContent = "Female";
+
+    const genderlabel = document.createElement("label");
+    genderlabel.innerHTML = "Gender:<br>";
+
+    //Hobby Checkbox
+    const hobbylabel = document.createElement("label");
+    hobbylabel.innerHTML = "Hobby:<br>";
+
+    //GYM
+    const gym = document.createElement("input");
+    gym.type = "checkbox";
+    gym.id = "gym";
+    gym.value = "Gym";
+    gym.name = "hobby";
+    const gymlabel = document.createElement("label");
+    gymlabel.innerHTML = "Gym";
+
+    //Music
+    const musiclabel = document.createElement("label");
+    musiclabel.innerHTML = "music";
+    const music = document.createElement("input");
+    music.type = "checkbox";
+    music.id = "music";
+    music.value = "Music";
+    music.name = "hobby";
+
+    //  jogging
+    const joglabel = document.createElement("label");
+    joglabel.innerHTML = "Jogging";
+    const jog = document.createElement("input");
+    jog.type = "checkbox";
+    jog.id = "jog";
+    jog.value = "Jogging";
+    jog.name = "hobby";
+
     //submit button
     let sub = document.createElement("button");
     sub.setAttribute("type", "submit");
@@ -63,7 +118,7 @@
     let thead = document.createElement("thead");
     let tbody = document.createElement("tbody");
 
-    let header = ["Name", "Email", "Contact"];
+    let header = ["Name", "Email", "Contact", "Gender", "Hobby"];
     let tr = document.createElement("tr");
     for (let i = 0; i < header.length; i++) {
       let th = document.createElement("th");
@@ -84,7 +139,23 @@
     form.append(contactlabel);
     form.append(cont);
     form.append(document.createElement("br"));
+    form.append(genderlabel);
+    form.append(male);
+    form.append(malelabel);
+    form.append(female);
+    form.append(femalelabel);
+    form.append(document.createElement("br"));
+    form.append(hobbylabel);
+    form.append(gym);
+    form.append(gymlabel);
+    form.append(music);
+    form.append(musiclabel);
+    form.append(jog);
+    form.append(joglabel);
+    form.append(document.createElement("br"));
     form.append(sub);
+    form.append(document.createElement("br"));
+
     form.append(document.createElement("br"));
     form.append(table);
 
@@ -103,9 +174,17 @@
         let td3 = document.createElement("td");
         td3.style.border = "1px solid black";
         td3.innerHTML = data[i].Contact;
+        let td4 = document.createElement("td");
+        td4.style.border = "1px solid black";
+        td4.innerHTML = data[i].Gender;
+        let td5 = document.createElement("td");
+        td5.style.border = "1px solid black";
+        td5.innerHTML = data[i].Hobby;
         tr.append(td1);
         tr.append(td2);
         tr.append(td3);
+        tr.append(td4);
+        tr.append(td5);
         tbody.append(tr);
         table.append(tbody);
         form.append(table);
@@ -127,12 +206,25 @@
       let nam = document.getElementById("name").value;
       let em = document.getElementById("email").value;
       let cont = document.getElementById("contact").value;
+      let gen = document.querySelector('input[name="gender"]:checked')?.value;
+      let hob = document.querySelector('input[name="hobby"]:checked')?.value;
+
+      console.log(nam);
+      data.push({
+        Name: nam,
+        Email: em,
+        Contact: cont,
+        Gender: gen,
+        Hobby: hob,
+      });
+      console.log(data);
       document.getElementById("name").value = "";
       document.getElementById("email").value = "";
       document.getElementById("contact").value = "";
-      console.log(nam);
-      data.push({ Name: nam, Email: em, Contact: cont });
-      console.log(data);
+      document
+        .querySelectorAll('input[type="radio"], input[type="checkbox"]')
+        .forEach((el) => (el.checked = false));
+
       triggertable();
     }
 

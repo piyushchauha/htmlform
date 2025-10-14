@@ -16,12 +16,40 @@
   <script>
     let data = [];
     let form = document.getElementById("form1");
+    let table = document.createElement("table");
+    let tbody = document.createElement("tbody");
+    let sub = document.createElement("button");
+
     const datainput = [
       { label: "Name:", id: "name", type: "text" },
       { label: "Email:", id: "email", type: "email" },
       { label: "Contact:", id: "contact", type: "tel" },
+      {
+        label: "Gender:",
+        id: "gender",
+        type: "radio",
+        options: [
+          { label: "Male", value: "male", name: "gender", id: "male" },
+          { label: "Female", value: "female", name: "gender", id: "female" },
+        ],
+      },
+      {
+        label: "Hobby:",
+        id: "hobby",
+        type: "checkbox",
+        options: [
+          { label: "Gym", value: "gym", name: "hobby", id: "gym" },
+          { label: "Music", value: "music", name: "hobby", id: "music" },
+          { label: "Dance", value: "dance", name: "hobby", id: "dance" },
+        ],
+      },
       { label: "Password:", id: "password", type: "password" },
+      // { label: "", id: "submitbtn", type: "submit" },
     ];
+
+    // const subbtn = document.getElementById("submitbtn");
+
+    // const gender1 = document.getElementById("gender");
 
     //Label
     // datainput.forEach((ele) => {
@@ -36,45 +64,84 @@
     //   form.append(document.createElement("br"));
     // });
 
-    for (i = 0; i < datainput.length; i++) {
-      let label = document.createElement("label");
-      label.setAttribute("for", datainput[i].id);
-      label.innerHTML = datainput[i].label + "<br>";
-      let input = document.createElement("input");
-      input.setAttribute("type", datainput[i].type);
-      input.setAttribute("id", datainput[i].id);
-      form.append(label);
-      form.append(input);
+    function createform() {
+      for (i = 0; i < datainput.length; i++) {
+        let label = document.createElement("label");
+        label.setAttribute("for", datainput[i].id);
+        label.innerHTML = datainput[i].label + "<br>";
+        form.append(label);
+
+        if (!datainput[i].options) {
+          let input = document.createElement("input");
+          input.setAttribute("type", datainput[i].type);
+          input.setAttribute("id", datainput[i].id);
+          form.append(input);
+        }
+
+        form.append(document.createElement("br"));
+
+        // if (datainput[i].type == "checkbox" || datainput[i].type == "radio") {
+        //   form.removeChild(input == "radio" ? input : input);
+        // }
+        // if (inputdata[i].type == "checkbox" || datainput[i].type == "radio") {
+        //   let label1 = document.createElement("label");
+        //   label1.innerHTML = "Gender";
+        //   form.append(label1);
+
+        // }
+
+        if (datainput[i].options) {
+          for (j = 0; j < datainput[i].options.length; j++) {
+            let optionlabel = document.createElement("label");
+            optionlabel.innerHTML = datainput[i].options[j].label;
+            let optioninput = document.createElement("input");
+            optioninput.setAttribute("type", datainput[i].type);
+            optioninput.setAttribute("id", datainput[i].options[j].id);
+            optioninput.setAttribute("name", datainput[i].options[j].name);
+            optioninput.setAttribute("value", datainput[i].options[j].value);
+            form.append(optioninput);
+            form.append(optionlabel);
+            form.append(document.createElement("br"));
+          }
+        }
+      }
+      // let sub = document.createElement("button");
+      sub.setAttribute("type", "submit");
+      sub.innerHTML = "Submit";
+      sub.style.marginTop = "10px";
+      sub.style.marginBottom = "10px";
+      form.append(sub);
       form.append(document.createElement("br"));
+      // sub.addEventListener("click", submitdata);
     }
-    //submit button
-    let sub = document.createElement("button");
-    sub.setAttribute("type", "submit");
-    sub.innerHTML = "Submit";
-    sub.style.marginTop = "10px";
-    sub.style.marginBottom = "10px";
-    form.append(sub);
-    form.append(document.createElement("br"));
-    sub.addEventListener("click", submitdata);
+    // submit button
+    // sub.setAttribute("type", "submit");
+    // sub.innerHTML = "Submit";
+    // sub.style.marginTop = "10px";
+    // sub.style.marginBottom = "10px";
+    // form.append(sub);
+    // form.append(document.createElement("br"));
 
     //table
-    let table = document.createElement("table");
-    document.getElementById("displaytable").append(table);
-    table.style.border = "1px solid black";
-    let thead = document.createElement("thead");
-    let tbody = document.createElement("tbody");
+    function createtable() {
+      // let table = document.createElement("table");
+      document.getElementById("displaytable").append(table);
+      table.style.border = "1px solid black";
+      let thead = document.createElement("thead");
+      // let tbody = document.createElement("tbody");
 
-    for (i = 0; i < datainput.length; i++) {
-      let th = document.createElement("th");
-      let tr = document.createElement("tr");
-      th.innerHTML = datainput[i].label;
-      th.style.border = "1px solid black";
-      thead.append(th);
-      th.append(tr);
-      table.append(thead);
-      table.append(tbody);
+      for (i = 0; i < datainput.length; i++) {
+        let th = document.createElement("th");
+        let tr = document.createElement("tr");
+        th.innerHTML = datainput[i].label;
+        th.style.border = "1px solid black";
+        thead.append(th);
+        th.append(tr);
+        table.append(thead);
+        table.append(tbody);
+      }
+      form.append(table);
     }
-    form.append(table);
 
     function triggertable() {
       tbody.innerHTML = "";
@@ -92,9 +159,13 @@
       }
       table.append(tbody);
     }
-
+    // sub.addEventListener("click", submitdata);
     // document
     //   .getElementById("form1")
+    //   .addEventListener("click", (e) => submitdata(e));
+
+    // document
+    //   .getElementById("submitbtn")
     //   .addEventListener("submit", (e) => onSubmit(e));
     // function onSubmit(e) {
     //   e.preventDefault();
@@ -109,18 +180,52 @@
     //   console.log(data);
     //   triggertable();
     // }
+
+    // function radiofun() {
+    //   for (j = 0; j < datainput.length; j++) {
+    //     for (let z = 0; z < datainput[j].options?.length; z++) {
+    //       if (datainput[j].type == "checkbox" || datainput[j].type == "radio") {
+    //         // data[i][datainput[j].options[z].id] = "";
+    //         data[i][datainput[j].id] = "";
+    //         if (document.getElementById(datainput[j].options[z].id).checked) {
+    //           data[i][datainput[j].id] +=
+    //             document.getElementById(datainput[j].options[z].id).value + " ";
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+
     function submitdata(e) {
       e.preventDefault();
       myobject = {};
 
       for (i = 0; i < datainput.length; i++) {
-        let val = document.getElementById(datainput[i].id).value;
-        myobject[datainput[i].id] = val;
-        document.getElementById(datainput[i].id).value = "";
+        if (datainput[i].type == "checkbox" || datainput[i].type == "radio") {
+          myobject[datainput[i].id] = "";
+          for (let z = 0; z < datainput[i].options.length; z++) {
+            if (document.getElementById(datainput[i].options[z].id).checked) {
+              if (myobject[datainput[i].id] != "") {
+                myobject[datainput[i].id] += ",";
+              }
+              myobject[datainput[i].id] +=
+                document.getElementById(datainput[i].options[z].id).value + "";
+            }
+
+            document.getElementById(datainput[i].options[z].id).checked = false;
+          }
+        } else {
+          let val = document.getElementById(datainput[i].id).value;
+          myobject[datainput[i].id] = val;
+          document.getElementById(datainput[i].id).value = "";
+        }
       }
       data.push(myobject);
       console.log(data);
       triggertable();
     }
+    sub.addEventListener("click", submitdata);
+    createform();
+    createtable();
   </script>
 </html>
