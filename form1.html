@@ -15,15 +15,16 @@
   </body>
   <script>
     let data = [];
+    // let eindex = "";
     let form = document.getElementById("form1");
     let table = document.createElement("table");
     let tbody = document.createElement("tbody");
     let sub = document.createElement("button");
 
     const datainput = [
-      { label: "Name:", id: "name", type: "text" },
-      { label: "Email:", id: "email", type: "email" },
-      { label: "Contact:", id: "contact", type: "tel" },
+      { label: "Name", id: "name", type: "text" },
+      { label: "Email", id: "email", type: "email" },
+      { label: "Contact", id: "contact", type: "tel" },
       {
         label: "Gender:",
         id: "gender",
@@ -34,7 +35,7 @@
         ],
       },
       {
-        label: "Hobby:",
+        label: "Hobby",
         id: "hobby",
         type: "checkbox",
         options: [
@@ -59,15 +60,16 @@
           { label: "Baroda", value: "baroda", name: "city", id: "baroda" },
         ],
       },
-      { label: "Password:", id: "password", type: "password" },
+      { label: "Password", id: "password", type: "password" },
       { label: "", id: "submitbtn", type: "submit" },
-      // {
-      //   label: "Actions",
-      //   options: [
-      //     { label: "Edit", id: "edit", type: "button" },
-      //     { label: "Delete", id: "delete", type: "button" },
-      //   ],
-      // },
+      {
+        label: "Actions",
+        id: "actions",
+        // options: [
+        //   { label: "Edit", id: "edit", type: "button" },
+        //   { label: "Delete", id: "delete", type: "button" },
+        // ],
+      },
     ];
 
     // const subbtn = document.getElementById("submitbtn");
@@ -179,7 +181,7 @@
       let thead = document.createElement("thead");
       // let tbody = document.createElement("tbody");
 
-      for (i = 0; i < datainput.length; i++) {
+      for (let i = 0; i < datainput.length; i++) {
         if (datainput[i].type == "submit") {
           continue;
         }
@@ -203,6 +205,21 @@
 
         for (let j = 0; j < datainput.length; j++) {
           let td = document.createElement("td");
+          if (datainput[j].label == "Actions") {
+            let editbtn = document.createElement("button");
+            editbtn.innerHTML = "Edit";
+            editbtn.style.marginRight = "5px";
+            editbtn.addEventListener("click", () => editrow(i));
+
+            let deletebtn = document.createElement("button");
+            deletebtn.innerHTML = "Delete";
+            deletebtn.addEventListener("click", () => deleterow(i));
+            td.append(editbtn);
+            td.append(deletebtn);
+            tr.append(td);
+            tbody.append(tr);
+            continue;
+          }
           td.style.border = "1px solid black";
           if (datainput[j].type == "submit") {
             continue;
@@ -252,17 +269,65 @@
     //     }
     //   }
     // }
+    function deleterow(ind) {
+      data.splice(ind, 1);
+      triggertable();
+    }
+
+    function editrow(ind) {
+      let editdata = data[ind];
+      // eindex = ind;
+
+      for (let i = 0; i < datainput.length; i++) {
+        if (datainput[i].type == "submit") {
+          continue;
+        }
+
+        if (datainput[i].type == "radio") {
+          let val = editdata[datainput[i].id];
+          for (let j = 0; j < datainput[i].options.length; j++) {
+            if (datainput[i].options[j].value == val) {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = true;
+            } else {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = false;
+            }
+          }
+        } else if (datainput[i].type == "checkbox") {
+          let val = editdata[datainput[i].id].split(",");
+          for (let j = 0; j < datainput[i].options.length; j++) {
+            if (val.includes(datainput[i].options[j].value)) {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = true;
+            } else {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = false;
+            }
+          }
+        } else {
+          document.getElementById(datainput[i].id).value =
+            editdata[datainput[i].id];
+        }
+      }
+      console.log(editdata);
+      triggertable();
+    }
 
     function submitdata(e) {
       e.preventDefault();
       myobject = {};
 
       for (i = 0; i < datainput.length; i++) {
-        if (
-          datainput[i].type == "checkbox" ||
-          datainput[i].type == "radio"
-          // datainput[i].type == "dropdown"
-        ) {
+        if (datainput[i].label == "Actions") {
+          continue;
+        }
+
+        if (datainput[i].type == "checkbox" || datainput[i].type == "radio") {
           myobject[datainput[i].id] = "";
           for (let z = 0; z < datainput[i].options.length; z++) {
             if (document.getElementById(datainput[i].options[z].id).checked) {
@@ -287,7 +352,12 @@
           document.getElementById(datainput[i].id).value = "";
         }
       }
+      // if (!eindex == " ") {
+      //   data[eindex] = myobject;
+      //   eindex = "";
+      // } else {
       data.push(myobject);
+      // }
       console.log(data);
       triggertable();
     }
