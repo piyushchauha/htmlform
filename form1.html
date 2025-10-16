@@ -15,7 +15,7 @@
   </body>
   <script>
     let data = [];
-    // let eindex = "";
+    let eindex = "";
     let form = document.getElementById("form1");
     let table = document.createElement("table");
     let tbody = document.createElement("tbody");
@@ -185,16 +185,70 @@
         if (datainput[i].type == "submit") {
           continue;
         }
+        // let tr = document.createElement("tr");
         let th = document.createElement("th");
-        let tr = document.createElement("tr");
         th.innerHTML = datainput[i].label;
         th.style.border = "1px solid black";
         thead.append(th);
-        th.append(tr);
+        // th.append(tr);
         table.append(thead);
         table.append(tbody);
       }
       form.append(table);
+    }
+    function deleterow(ind) {
+      data.splice(ind, 1);
+      triggertable();
+    }
+
+    function editrow(ind) {
+      let editdata = data[ind];
+      eindex = ind;
+
+      for (let i = 0; i < datainput.length; i++) {
+        if (datainput[i].type == "submit") {
+          continue;
+        }
+
+        if (datainput[i].type == "radio") {
+          let val = editdata[datainput[i].id];
+          for (let j = 0; j < datainput[i].options.length; j++) {
+            if (datainput[i].options[j].value == val) {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = true;
+            } else {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = false;
+            }
+          }
+        } else if (datainput[i].type == "checkbox") {
+          let val = editdata[datainput[i].id].split(",");
+          for (let j = 0; j < datainput[i].options.length; j++) {
+            if (val.includes(datainput[i].options[j].value)) {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = true;
+            } else {
+              document.getElementById(
+                datainput[i].options[j].id
+              ).checked = false;
+            }
+          }
+        } else if (
+          datainput[i].type == "text" ||
+          datainput[i].type == "tel" ||
+          datainput[i].type == "email" ||
+          datainput[i].type == "password" ||
+          datainput[i].type == "dropdown"
+        ) {
+          document.getElementById(datainput[i].id).value =
+            editdata[datainput[i].id];
+        }
+      }
+      console.log(editdata);
+      triggertable();
     }
 
     function triggertable() {
@@ -269,54 +323,6 @@
     //     }
     //   }
     // }
-    function deleterow(ind) {
-      data.splice(ind, 1);
-      triggertable();
-    }
-
-    function editrow(ind) {
-      let editdata = data[ind];
-      // eindex = ind;
-
-      for (let i = 0; i < datainput.length; i++) {
-        if (datainput[i].type == "submit") {
-          continue;
-        }
-
-        if (datainput[i].type == "radio") {
-          let val = editdata[datainput[i].id];
-          for (let j = 0; j < datainput[i].options.length; j++) {
-            if (datainput[i].options[j].value == val) {
-              document.getElementById(
-                datainput[i].options[j].id
-              ).checked = true;
-            } else {
-              document.getElementById(
-                datainput[i].options[j].id
-              ).checked = false;
-            }
-          }
-        } else if (datainput[i].type == "checkbox") {
-          let val = editdata[datainput[i].id].split(",");
-          for (let j = 0; j < datainput[i].options.length; j++) {
-            if (val.includes(datainput[i].options[j].value)) {
-              document.getElementById(
-                datainput[i].options[j].id
-              ).checked = true;
-            } else {
-              document.getElementById(
-                datainput[i].options[j].id
-              ).checked = false;
-            }
-          }
-        } else {
-          document.getElementById(datainput[i].id).value =
-            editdata[datainput[i].id];
-        }
-      }
-      console.log(editdata);
-      triggertable();
-    }
 
     function submitdata(e) {
       e.preventDefault();
@@ -352,12 +358,12 @@
           document.getElementById(datainput[i].id).value = "";
         }
       }
-      // if (!eindex == " ") {
-      //   data[eindex] = myobject;
-      //   eindex = "";
-      // } else {
-      data.push(myobject);
-      // }
+      if (eindex === "") {
+        data.push(myobject);
+      } else {
+        data[eindex] = myobject;
+        eindex = "";
+      }
       console.log(data);
       triggertable();
     }
