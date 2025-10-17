@@ -15,26 +15,26 @@
   </body>
   <script>
     let data = [
-      {
-        name: "Piyush Chauhan",
-        email: "cp262329@gmail.com",
-        contact: "0123456789",
-        gender: "male",
-        hobby: "gym,music",
-        city: "ahmedabad",
-        password: "1234567890",
-        submitbtn: "",
-      },
-      {
-        name: "king",
-        email: "king@gmail.com",
-        contact: "01234567",
-        gender: "female",
-        hobby: "gym,",
-        city: "rajkot",
-        password: "5678",
-        submitbtn: "",
-      },
+      // {
+      //   name: "Piyush Chauhan",
+      //   email: "cp262329@gmail.com",
+      //   contact: "0123456789",
+      //   gender: "male",
+      //   hobby: "gym,music",
+      //   city: "ahmedabad",
+      //   password: "1234567890",
+      //   submitbtn: "",
+      // },
+      // {
+      //   name: "king",
+      //   email: "king@gmail.com",
+      //   contact: "01234567",
+      //   gender: "female",
+      //   hobby: "gym,",
+      //   city: "rajkot",
+      //   password: "5678",
+      //   submitbtn: "",
+      // },
     ];
     let eindex = "";
     let form = document.getElementById("form1");
@@ -196,6 +196,7 @@
             option.setAttribute("value", datainput[i].options[j].value);
             if (editdata[datainput[i].id] == datainput[i].options[j].value)
               option.setAttribute("selected", true);
+
             option.setAttribute("id", datainput[i].options[j].id);
             option.innerHTML = datainput[i].options[j].label;
 
@@ -253,8 +254,6 @@
           sub.addEventListener("click", submitdata);
         }
       }
-       
-      createtable();
     }
 
     //table
@@ -276,9 +275,9 @@
         table.append(thead);
         table.append(tbody);
       }
-      form.append(table);
       triggertable();
     }
+
     function deleterow(ind) {
       data.splice(ind, 1);
       triggertable();
@@ -419,6 +418,6 @@
       triggertable();
     }
     createform();
-    // createtable();
+    createtable();
   </script>
 </html>
