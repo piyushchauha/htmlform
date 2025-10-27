@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer and vendor</title>
+  </head>
+  <body>
+    <div class="maincontainer">
+      <div class="subcontainer">
+        <div id="header"></div>
+        <form id="form1"></form>
+        <div id="displaytable"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let formchoice = "";
+    let header = document.getElementById("header");
+    let customer = document.createElement("button");
+    customer.innerHTML = "Customer";
+    customer.style.marginRight = "10px";
+    customer.addEventListener("click", () => createform("customer"));
+    customer.addEventListener("click", () => createtable("customer"));
+    // customer.addEventListener("click", () => createform("customer"));
+    header.append(customer);
+    let vendor = document.createElement("button");
+    vendor.innerHTML = "Vendor";
+    vendor.addEventListener("click", () => createform("vendor"));
+    vendor.addEventListener("click", () => createtable("vendor"));
+    header.append(vendor);
+
+    let choice = "";
+    let form = document.getElementById("form1");
+    let table = document.createElement("table");
+    let tbody = document.createElement("tbody");
+    let sub = document.createElement("button");
+
+    const customerinput = [
+      { label: "Name", id: "name", type: "text" },
+      { label: "Email", id: "email", type: "email" },
+      { label: "Contact", id: "contact", type: "tel" },
+      {
+        label: "Gender:",
+        id: "gender",
+        type: "radio",
+        options: [
+          { label: "Male", value: "male", name: "gender", id: "male" },
+          { label: "Female", value: "female", name: "gender", id: "female" },
+        ],
+      },
+      {
+        label: "Hobby",
+        id: "hobby",
+        type: "checkbox",
+        options: [
+          { label: "Gym", value: "gym", name: "hobby", id: "gym" },
+          { label: "Music", value: "music", name: "hobby", id: "music" },
+          { label: "Dance", value: "dance", name: "hobby", id: "dance" },
+        ],
+      },
+      {
+        label: "City",
+        id: "city",
+        type: "dropdown",
+        options: [
+          { label: "select city", value: "", name: "city", id: "selectcity" },
+          {
+            label: "Ahmedabad",
+            value: "ahmedabad",
+            name: "city",
+            id: "ahmedabad",
+          },
+          { label: "Rajkot", value: "rajkot", name: "city", id: "rajkot" },
+          { label: "Baroda", value: "baroda", name: "city", id: "baroda" },
+        ],
+      },
+      { label: "Password", id: "password", type: "password" },
+      { label: "", id: "submitbtn", type: "submit" },
+      {
+        label: "Actions",
+        id: "actions",
+      },
+    ];
+
+    const vendorinput = [
+      //   { label: "Name", id: "name", type: "text" },
+      //   { label: "Email", id: "email", type: "email" },
+      { label: "Contact", id: "contact", type: "tel" },
+      {
+        label: "Gender:",
+        id: "gender",
+        type: "radio",
+        options: [
+          { label: "Male", value: "male", name: "gender", id: "male" },
+          { label: "Female", value: "female", name: "gender", id: "female" },
+        ],
+      },
+      {
+        label: "Hobby",
+        id: "hobby",
+        type: "checkbox",
+        options: [
+          { label: "Gym", value: "gym", name: "hobby", id: "gym" },
+          { label: "Music", value: "music", name: "hobby", id: "music" },
+          { label: "Dance", value: "dance", name: "hobby", id: "dance" },
+        ],
+      },
+      {
+        label: "City",
+        id: "city",
+        type: "dropdown",
+        options: [
+          { label: "select city", value: "", name: "city", id: "selectcity" },
+          {
+            label: "Ahmedabad",
+            value: "ahmedabad",
+            name: "city",
+            id: "ahmedabad",
+          },
+          { label: "Rajkot", value: "rajkot", name: "city", id: "rajkot" },
+          { label: "Baroda", value: "baroda", name: "city", id: "baroda" },
+        ],
+      },
+      { label: "Password", id: "password", type: "password" },
+      { label: "", id: "submitbtn", type: "submit" },
+      {
+        label: "Actions",
+        id: "actions",
+      },
+    ];
+
+    function createform(formName) {
+      formchoice = formName;
+      //   console.log(formName);
+      form.innerHTML = "";
+      if (formName == "customer") {
+        choice = customerinput;
+      } else {
+        choice = vendorinput;
+      }
+      //   console.log(choice);
+
+      for (i = 0; i < choice.length; i++) {
+        if (choice[i].label == "Actions") {
+          continue;
+        }
+        let label = document.createElement("label");
+        label.setAttribute("for", choice[i].id);
+        label.innerHTML = choice[i].label + "<br>";
+        form.append(label);
+
+        if (!choice[i].options) {
+          let input = document.createElement("input");
+          input.setAttribute("type", choice[i].type);
+          input.setAttribute("id", choice[i].id);
+          form.append(input);
+        }
+
+        // if (choice[i].type == "submit") {
+        //   let sub = document.getElementById("submitbtn");
+
+        //   sub.innerText = "Submit";
+        //   sub.style.marginBottom = "10px";
+        //   sub.addEventListener("click", submitdata);
+        // }
+
+        if (choice[i].type == "dropdown" && choice[i].options) {
+          let select = document.createElement("select");
+          select.setAttribute("id", choice[i].id);
+          form.append(select);
+          for (j = 0; j < choice[i].options.length; j++) {
+            let option = document.createElement("option");
+            option.setAttribute("value", choice[i].options[j].value);
+            option.setAttribute("id", choice[i].options[j].id);
+            option.innerHTML = choice[i].options[j].label;
+            select.append(option);
+          }
+        }
+        form.append(document.createElement("br"));
+
+        if (
+          (choice[i].type == "radio" || choice[i].type == "checkbox") &&
+          choice[i].options
+        ) {
+          for (j = 0; j < choice[i].options.length; j++) {
+            let optionlabel = document.createElement("label");
+            optionlabel.innerHTML = choice[i].options[j].label;
+            let optioninput = document.createElement("input");
+            optioninput.setAttribute("type", choice[i].type);
+            optioninput.setAttribute("id", choice[i].options[j].id);
+            optioninput.setAttribute("name", choice[i].options[j].name);
+            optioninput.setAttribute("value", choice[i].options[j].value);
+            form.append(optioninput);
+            form.append(optionlabel);
+            form.append(document.createElement("br"));
+          }
+        }
+      }
+    }
+    // function createtable(tablename = formchoice) {
+    //   console.log(tablename);
+    //   if (tablename == "customer") {
+    //     choice = customerinput;
+    //   } else {
+    //     choice = vendorinput;
+    //   }
+    //   console.log(choice);
+    //   tbody.innerHTML = "";
+    //   document.getElementById("displaytable").append(table);
+    //   table.style.border = "1px solid black";
+    //   let thead = document.createElement("thead");
+    //   for (let i = 0; i < choice.length; i++) {
+    //     // if (datainput[i].type == "submit") {
+    //     //   continue;
+    //     // }
+    //     let th = document.createElement("th");
+    //     th.innerHTML = choice[i].label;
+    //     th.style.border = "1px solid black";
+    //     thead.append(th);
+    //     table.append(thead);
+    //     table.append(tbody);
+    //   }
+    //   //   triggertable();
+    // }
+    function createtable(tablename) {
+      table.innerHTML = "";
+      console.log(tablename);
+      if (tablename == "customer") {
+        choice = customerinput;
+      } else {
+        choice = vendorinput;
+      }
+      console.log(choice);
+      tbody.innerHTML = "";
+      document.getElementById("displaytable").append(table);
+      table.style.border = "1px solid black";
+      let thead = document.createElement("thead");
+      for (let i = 0; i < choice.length; i++) {
+        // if (datainput[i].type == "submit") {
+        //   continue;
+        // }
+        let th = document.createElement("th");
+        th.innerHTML = choice[i].label;
+        th.style.border = "1px solid black";
+        thead.append(th);
+        table.append(thead);
+        table.append(tbody);
+      }
+      //   triggertable();
+    }
+    createform();
+    createtable();
+  </script>
+</html>
