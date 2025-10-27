@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>input form</title>
+  </head>
+  <body>
+    <div id="maincontainer"></div>
+    <div id="inputcontainer"></div>
+    <div id="resultcontainer"></div>
+  </body>
+  <script>
+    let dropdown = document.getElementById("maincontainer");
+    let inputcontainer = document.getElementById("inputcontainer");
+    let resultcontainer = document.getElementById("resultcontainer");
+    let inputdata = [
+      {
+        label: "Select the input",
+        id: "inputselect",
+
+        options: [
+          { label: "Select the input", value: "", id: "select" },
+          { label: "text", id: "texte", type: "text", value: "text" },
+          { label: "tel", id: "tele", type: "tel", value: "tel" },
+          { label: "email", id: "emaile", type: "email", value: "email" },
+          {
+            label: "password",
+            id: "passe",
+            type: "password",
+            value: "password",
+          },
+        ],
+      },
+    ];
+    let attributedata = [
+      {
+        label: "Name",
+        type: "text",
+        inf: "name",
+      },
+      {
+        label: "Value",
+        type: "text",
+        inf: "value",
+      },
+      {
+        label: "Id",
+        type: "text",
+        inf: "id",
+      },
+    ];
+
+    function createinput() {
+      for (i = 0; i < inputdata.length; i++) {
+        let label = document.createElement("label");
+        label.innerHTML = inputdata[i].label + "<br>";
+        dropdown.append(label);
+        let select = document.createElement("select");
+        select.setAttribute("id", inputdata[i].id);
+        dropdown.append(select);
+        for (j = 0; j < inputdata[i].options.length; j++) {
+          let options = document.createElement("option");
+          options.setAttribute("value", inputdata[i].options[j].value);
+          options.setAttribute("id", inputdata[i].options[j].id);
+          options.innerHTML = inputdata[i].options[j].label;
+          options.setAttribute("value", inputdata[i].options[j].value);
+
+          select.append(options);
+
+          let inputcontainer = document.createElement("div");
+          inputcontainer.setAttribute("id", "inputcontainer");
+          //   dropdown.append(inputcontainer);
+        }
+        select.addEventListener("change", function () {
+          let selectedvalue = this.value;
+          console.log(selectedvalue);
+          inputcontainer.innerHTML = "";
+
+          if (selectedvalue) {
+            for (i = 0; i < attributedata.length; i++) {
+              let label1 = document.createElement("label");
+              label1.innerHTML = attributedata[i].label + "<br>";
+
+              let input1 = document.createElement("input");
+
+              input1.setAttribute(attributedata[i].type, "text");
+              input1.setAttribute("id", attributedata[i].inf);
+
+              inputcontainer.append(label1);
+              inputcontainer.append(input1);
+              inputcontainer.append(document.createElement("br"));
+            }
+
+            let sub = document.createElement("button");
+            sub.innerHTML = "Submit";
+            sub.style.marginTop = "20px";
+            inputcontainer.append(sub);
+            // inputcontainer.addEventListener("click",()=>createdfield);
+
+            sub.addEventListener("click", function () {
+              // function createdfield() {
+              let nameval = document.getElementById("name").value;
+              let valueval = document.getElementById("value").value;
+              let idval = document.getElementById("id").value;
+
+              let newinput = document.createElement("input");
+              newinput.setAttribute("type", selectedvalue);
+              if (nameval) {
+                newinput.setAttribute("name", nameval);
+              }
+              if (valueval) {
+                newinput.setAttribute("value", valueval);
+              }
+              if (idval) {
+                newinput.setAttribute("id", idval);
+              }
+
+              let labelnew = document.createElement("label");
+              labelnew.innerHTML = nameval;
+              resultcontainer.append(labelnew);
+              resultcontainer.append(newinput);
+              resultcontainer.append(document.createElement("br"));
+            });
+          }
+        });
+      }
+    }
+
+    createinput();
+  </script>
+</html>
