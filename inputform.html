@@ -9,11 +9,20 @@
     <div id="maincontainer"></div>
     <div id="inputcontainer"></div>
     <div id="resultcontainer"></div>
+    <div id="btncontainer"></div>
+    <div id="displaytable"></div>
   </body>
   <script>
+    let data = [];
+    let sub1 = document.createElement("button");
+    let table = document.createElement("table");
+    let tbody = document.createElement("tbody");
     let dropdown = document.getElementById("maincontainer");
     let inputcontainer = document.getElementById("inputcontainer");
     let resultcontainer = document.getElementById("resultcontainer");
+    let btncontainer = document.getElementById("btncontainer");
+    let selectedvalue = "";
+
     let inputdata = [
       {
         label: "Select the input",
@@ -68,63 +77,93 @@
 
           select.append(options);
 
-          let inputcontainer = document.createElement("div");
+          let inputcontainer = document.getElementById("inputcontainer");
           inputcontainer.setAttribute("id", "inputcontainer");
           //   dropdown.append(inputcontainer);
         }
-        select.addEventListener("change", function () {
-          let selectedvalue = this.value;
-          console.log(selectedvalue);
-          inputcontainer.innerHTML = "";
-
-          if (selectedvalue) {
-            for (i = 0; i < attributedata.length; i++) {
-              let label1 = document.createElement("label");
-              label1.innerHTML = attributedata[i].label + "<br>";
-
-              let input1 = document.createElement("input");
-
-              input1.setAttribute(attributedata[i].type, "text");
-              input1.setAttribute("id", attributedata[i].inf);
-
-              inputcontainer.append(label1);
-              inputcontainer.append(input1);
-              inputcontainer.append(document.createElement("br"));
-            }
-
-            let sub = document.createElement("button");
-            sub.innerHTML = "Submit";
-            sub.style.marginTop = "20px";
-            inputcontainer.append(sub);
-            // inputcontainer.addEventListener("click",()=>createdfield);
-
-            sub.addEventListener("click", function () {
-              // function createdfield() {
-              let nameval = document.getElementById("name").value;
-              let valueval = document.getElementById("value").value;
-              let idval = document.getElementById("id").value;
-
-              let newinput = document.createElement("input");
-              newinput.setAttribute("type", selectedvalue);
-              if (nameval) {
-                newinput.setAttribute("name", nameval);
-              }
-              if (valueval) {
-                newinput.setAttribute("value", valueval);
-              }
-              if (idval) {
-                newinput.setAttribute("id", idval);
-              }
-
-              let labelnew = document.createElement("label");
-              labelnew.innerHTML = nameval;
-              resultcontainer.append(labelnew);
-              resultcontainer.append(newinput);
-              resultcontainer.append(document.createElement("br"));
-            });
-          }
-        });
+        // select.addEventListener("change", function () {
+        select.addEventListener("change", inputfield);
       }
+
+      function inputfield() {
+        selectedvalue = this.value;
+        console.log(selectedvalue);
+        inputcontainer.innerHTML = "";
+
+        if (selectedvalue) {
+          for (i = 0; i < attributedata.length; i++) {
+            let label1 = document.createElement("label");
+            label1.innerHTML = attributedata[i].label + "<br>";
+
+            let input1 = document.createElement("input");
+
+            input1.setAttribute(attributedata[i].type, "text");
+            input1.setAttribute("id", attributedata[i].inf);
+
+            inputcontainer.append(label1);
+            inputcontainer.append(input1);
+            inputcontainer.append(document.createElement("br"));
+          }
+
+          let sub = document.createElement("button");
+          sub.innerHTML = "Submit";
+          sub.style.margin = "20px";
+          inputcontainer.append(sub);
+          sub.addEventListener("click", createdfield);
+        }
+      }
+      // });
+    }
+
+    function createdfield() {
+      let nameval = document.getElementById("name").value;
+      let valueval = document.getElementById("value").value;
+      let idval = document.getElementById("id").value;
+
+      let newinput = document.createElement("input");
+      newinput.setAttribute("type", selectedvalue);
+      if (nameval) {
+        newinput.setAttribute("name", nameval);
+      }
+      if (valueval) {
+        newinput.setAttribute("value", valueval);
+      }
+      if (idval) {
+        newinput.setAttribute("id", idval);
+      }
+
+      sub1.innerHTML = "Submit";
+      sub1.style.margin = "20px";
+      //  sub1.style.marginTop = "20px";
+      sub1.addEventListener("click", (e) => submitdata(e));
+      let labelnew = document.createElement("label");
+      labelnew.innerHTML = nameval;
+      resultcontainer.append(labelnew);
+      resultcontainer.append(newinput);
+      resultcontainer.append(document.createElement("br"));
+      resultcontainer.append(sub1);
+      data.push({ nameval, valueval, idval });
+      console.log(newinput);
+      console.log(data);
+    }
+
+    function createtable() {
+      table.innerHTML = "";
+      document.getElementById("displaytable").append(table);
+      let thead = document.createElement("thead");
+      for (i = 0; i < data.length; i++) {
+        let th = document.createElement("th");
+        th.innerHTML = data[i].nameval;
+        th.style.border = "1px solid black";
+        thead.append(th);
+        table.append(thead);
+        table.append(tbody);
+      }
+    }
+
+    function submitdata(e) {
+      e.preventDefault();
+      createtable();
     }
 
     createinput();
