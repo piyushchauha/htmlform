@@ -8,6 +8,8 @@
   <body>
     <div id="maincontainer"></div>
     <div id="inputcontainer"></div>
+    <div id="optioncontainer"></div>
+
     <div id="resultcontainer"></div>
     <div id="btncontainer"></div>
     <div id="displaytable"></div>
@@ -22,8 +24,12 @@
     let inputcontainer = document.getElementById("inputcontainer");
     let resultcontainer = document.getElementById("resultcontainer");
     let btncontainer = document.getElementById("btncontainer");
+    let optioncontainer = document.getElementById("optioncontainer");
     let selectedvalue = "";
-    let inputattribute = {};
+    // let inputattribute = {};
+    // let optionstore = [];
+    let myobject = [];
+    let currentoptions = [];
 
     table.style.border = "1px solid black";
 
@@ -55,9 +61,22 @@
             type: "radio",
             value: "radio",
           },
+          {
+            label: "checkbox",
+            id: "checkbox",
+            type: "checkbox",
+            value: "checkbox",
+          },
+          {
+            label: "dropdown",
+            id: "dropdown",
+            type: "dropdown",
+            value: "dropdown",
+          },
         ],
       },
     ];
+
     let attributedata1 = [
       {
         label: "Name",
@@ -80,9 +99,8 @@
       for (i = 0; i < inputdata1.length; i++) {
         let label = document.createElement("label");
         label.setAttribute("for", inputdata1[i].id);
-
-        // label.innerHTML = inputdata1[i].label;
         dropdown.append(label);
+
         if (!inputdata1[i].options) {
           let input = document.createElement("input");
           input.setAttribute("id", inputdata1[i].id);
@@ -90,6 +108,7 @@
           input.setAttribute("value", inputdata1[i].value);
           dropdown.append(input);
         }
+
         if (inputdata1[i].type == "dropdown") {
           let select = document.createElement("select");
           select.setAttribute("id", inputdata1[i].id);
@@ -102,6 +121,7 @@
             options.setAttribute("value", inputdata1[i].options[j].value);
             select.append(options);
           }
+
           input.addEventListener("click", inputselect);
           select.addEventListener("click", inputfield);
         }
@@ -109,6 +129,8 @@
     }
 
     function inputselect() {
+      inputcontainer.innerHTML = "";
+      // resultcontainer.innerHTML = "";
       for (i = 0; i < attributedata1.length; i++) {
         let label1 = document.createElement("label");
         label1.innerHTML = attributedata1[i].label + "<br>";
@@ -122,139 +144,151 @@
         inputcontainer.append(input1);
         inputcontainer.append(document.createElement("br"));
       }
-      if (selectedvalue === "radio") {
-        radiocreation();
+
+      if (
+        selectedvalue === "radio" ||
+        selectedvalue === "checkbox" ||
+        selectedvalue === "dropdown"
+      ) {
+        optioncreation();
       }
+
       inputcontainer.append(document.createElement("br"));
-      let sub = document.createElement("button");
-      sub.innerHTML = "Create";
-      sub.style.margin = "20px";
-      resultcontainer.append(sub);
-      sub.addEventListener("click", createdfield);
+      let create = document.createElement("button");
+      create.innerHTML = "Create";
+      create.style.margin = "20px";
+      inputcontainer.append(create);
+      create.addEventListener("click", createdfield);
     }
 
-    function radiocreation() {
+    function optioncreation() {
       // inputcontainer.innerHTML = "";
-      optionstore = [];
-
-      // let label = document.createElement("label");
-      // label.innerHTML = "Add Options";
-      // resultcontainer.append(label);
-
-      // let inputoption = document.createElement("input");
-      // inputoption.setAttribute("type", "text");
-      // inputoption.setAttribute("placeholder", "Enter the options");
+      // optionstore = [];
+      // let options = [];
+      // let optionstore = [];
 
       let btn = document.createElement("button");
       btn.innerHTML = "Add Options";
 
-      // resultcontainer.append(inputoption);
+      let inputoption;
       inputcontainer.append(btn);
+
+      let subbtn = document.createElement("button");
+      subbtn.innerHTML = "save options";
 
       btn.addEventListener("click", () => {
         let inputoption = document.createElement("input");
         inputoption.setAttribute("type", "text");
         inputoption.setAttribute("placeholder", "Enter the options");
-        // let newdiv = document.createElement("div");
 
-        inputcontainer.append(inputoption);
-        // newdiv.append(newlabel);
+        optioncontainer.append(inputoption);
 
-        // inputcontainer.append(newdiv);
-
-        // const optionvalue = inputoption.value;
-        // let newdiv = document.createElement("div");
-        // let inputtype = document.createElement("input");
-        // inputtype.setAttribute("type", "radio");
-        // inputtype.setAttribute("name", "optiongroup");
-        // let newlabel = document.createElement("label");
-        // newlabel.textContent = optionvalue;
-
-        // newdiv.append(inputtype);
-        // newdiv.append(newlabel);
-
-        // resultcontainer.append(newdiv);
-
-        // inputoption.value = "";
-
-        // optionstore.push(optionvalue);
-        // console.log(optionstore);
         subbtn.addEventListener("click", () => {
           const optionvalue = inputoption.value;
-          // let newdiv = document.createElement("div");
+
           let inputtype = document.createElement("input");
-          inputtype.setAttribute("type", "radio");
-          inputtype.setAttribute("name", "optiongroup");
+
+          if (selectedvalue === "dropdown") {
+            inputtype = document.createElement("select");
+            let opt = document.createElement("option");
+            opt.value = optionvalue;
+            opt.innerText = optionvalue;
+            inputtype.append(opt);
+            resultcontainer.append(inputtype);
+          } else if (selectedvalue == "checkbox") {
+            inputtype.setAttribute("type", "checkbox");
+          } else if (selectedvalue == "radio") {
+            inputtype.setAttribute("type", "radio");
+          }
+
+          for (i = 0; i < currentoptions.length; i++) {
+            inputtype.setAttribute("id", currentoptions[i]);
+            inputtype.setAttribute("value", currentoptions[i]);
+          }
+          for (i = 0; i < data1.length; i++) {
+            inputtype.setAttribute("name", data1[i].name);
+            // label1 = document.createElement("label");
+            // label1.innerHTML = data1[i].name;
+
+            // console.log(data1[i].name);
+          }
+
           let newlabel = document.createElement("label");
           newlabel.textContent = optionvalue;
 
-          // newdiv.append(inputtype);
-          // newdiv.append(newlabel);
+          // resultcontainer.append(label1);
           resultcontainer.append(inputtype);
           resultcontainer.append(newlabel);
-          // resultcontainer.append(newdiv);
 
           inputoption.value = "";
 
-          optionstore.push(optionvalue);
-          console.log(optionstore);
+          inputoption.remove();
+          // inputattribute.gender = optionvalue;
+          currentoptions.push(optionvalue);
+          // inputattribute.option = options;
+          // console.log(options);
+          // console.log(inputattribute);
+          // optionstore.push(optionvalue);
+          // console.log(optionstore);
         });
       });
-      let subbtn = document.createElement("button");
-      subbtn.innerHTML = "submit";
 
       inputcontainer.append(subbtn);
 
-      // resultcontainer.append(inputoption);
       inputcontainer.append(btn);
     }
 
     function inputfield() {
       selectedvalue = document.getElementById("inputselect").value;
-      // selectedvalue = this.value;
-      console.log(selectedvalue);
+      // console.log(selectedvalue);
     }
 
     function createdfield() {
-      // let inputattribute = {};
+      let inputattribute = {};
+      currentoptions = [];
       let newinput = document.createElement("input");
 
       newinput.setAttribute("type", selectedvalue);
-      // if (selectedvalue === "radio") {
-      //   radiocreation();
-      // }
 
       for (i = 0; i < attributedata1.length; i++) {
         let att = attributedata1[i].inf;
         let val = document.getElementById(att).value;
         inputattribute[att] = val;
 
-        if (inputattribute) {
-          newinput.setAttribute(attributedata1[i].inf, val);
-        }
+        newinput.setAttribute(attributedata1[i].inf, val);
       }
 
-      for (i = 0; i < data1.length; i++) {
-        let labelnew = document.createElement("label");
-        labelnew.innerHTML = data1[i].name;
-        resultcontainer.append(labelnew);
+      // for (i = 0; i < data1.length; i++) {
+      //   let labelnew = document.createElement("label");
+      //   labelnew.innerHTML = data1[i].name;
+      //   resultcontainer.append(labelnew);
 
-        console.log(labelnew);
-      }
+      //   console.log(labelnew);
+      // }
 
       sub1.innerHTML = "Submit";
       sub1.style.margin = "20px";
       sub1.addEventListener("click", (e) => submitdata1(e));
 
+      // if (selectedvalue !== "radio") {
       resultcontainer.append(newinput);
       resultcontainer.append(document.createElement("br"));
-      resultcontainer.append(sub1);
+      displaytable.append(sub1);
       data1.push(inputattribute);
       data.push(newinput);
+      // optionstore.push({ inputattribute });
+      // myobject.push(inputattribute, options);
+      myobject.push({
+        inputattribute,
+        options: currentoptions,
+      });
 
-      console.log(newinput);
-      console.log(data1);
-      console.log(data);
+      console.log(myobject);
+      // console.log(inputattribute);
+      // console.log(newinput);
+      // console.log(data1);
+      // console.log(data);
+      // // }
 
       document.getElementById("name").value = "";
       document.getElementById("value").value = "";
