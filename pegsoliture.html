@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peg soliture</title>
+    <style>
+      .supermaincontainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #table {
+        height: 600px;
+        width: 700px;
+      }
+
+      tr {
+        border: 1px solid black;
+      }
+
+      td {
+        border: 1px solid black;
+        /* text-align: center; */
+        text-align: -webkit-center;
+        height: 90px;
+        width: 90px;
+      }
+
+      #td1 {
+        border: none;
+      }
+
+      .mydiv {
+        height: 50px;
+        width: 50px;
+        border-radius: 50%;
+        border: 1px solid black;
+        cursor: pointer;
+        background-color: black;
+      }
+      .toggle {
+        /* background-color: white; */
+        border: 5px solid red;
+      }
+
+      /* .resetbtn{
+        padding:10px 70px 10px 70px ;
+        font-size: 20px;
+        color: white;   
+        background-color:rgb(205, 27, 27); 
+        border-radius: 12px;
+ }
+ #resetbutton{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+ } */
+    </style>
+  </head>
+  <body>
+    <div class="supermaincontainer">
+      <div id="maincontainer">
+        <div id="displaytable"></div>
+
+        <!-- <div id="resetbutton">
+          <input type="button" class="resetbtn" value="Restart"></input>
+        </div> -->
+      </div>
+    </div>
+  </body>
+  <script>
+    function createTable() {
+      let table = document.createElement("table");
+      table.id = "table";
+      let tbody = document.createElement("tbody");
+      for (let i = 0; i < 7; i++) {
+        let tr = document.createElement("tr");
+        // tr.innerHTML = i + "i";
+        for (let j = 0; j < 7; j++) {
+          if (
+            (i < 2 && j < 2) ||
+            (i < 2 && j > 4) ||
+            (i > 4 && j < 2) ||
+            (i > 4 && j > 4)
+          ) {
+            let td1 = document.createElement("td");
+            td1.id = "td1";
+            tr.append(td1);
+            continue;
+          } else {
+            let td = document.createElement("td");
+            let div = document.createElement("div");
+            if (i === 3 && j === 3) {
+              div.style.backgroundColor = "white";
+            }
+            div.addEventListener("click", () => {
+              console.log("hii");
+              div.classList.toggle("toggle");
+              //   div.style.border = "5px solid red";
+            });
+
+            div.className = "mydiv";
+
+            td.append(div);
+            tr.append(td);
+          }
+        }
+        tbody.append(tr);
+        table.append(tbody);
+        displaytable.append(table);
+      }
+    }
+
+    createTable();
+  </script>
+</html>

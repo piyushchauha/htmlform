@@ -4,7 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Input form1</title>
+    <style>
+      /* table, */
+      td {
+        border: 1px solid black;
+      }
+      table {
+        border: 1px solid black;
+      }
+      th {
+        border: 1px solid black;
+      }
+      #editbutton {
+        margin-right: 5px;
+      }
+      #createbutton {
+        margin: 20px;
+      }
+      #addbutton {
+        margin-top: 15px;
+      }
+    </style>
   </head>
+
   <body>
     <div id="header"></div>
     <div id="fieldcontainer"></div>
@@ -17,7 +39,7 @@
   <script>
     let selectedvalue = "";
     let table = document.createElement("table");
-    table.style.border = "1px solid black";
+    // table.style.border = "1px solid black";
     let tbody = document.createElement("tbody");
     let currentoptions = [];
     let main = [];
@@ -84,7 +106,7 @@
       },
     ];
 
-    function createinput() {
+    function createInput() {
       for (i = 0; i < selectdata.length; i++) {
         let select = document.createElement("select");
         select.setAttribute("id", selectdata[i].id);
@@ -97,11 +119,11 @@
           select.append(options);
         }
 
-        select.addEventListener("change", fieldcreation);
+        select.addEventListener("change", fieldCreation);
       }
     }
 
-    function fieldcreation() {
+    function fieldCreation() {
       fieldcontainer.innerHTML = "";
       createcontainer.innerHTML = "";
 
@@ -126,19 +148,19 @@
         selectedvalue == "checkbox" ||
         selectedvalue == "dropdown"
       ) {
-        optiontextcreation();
+        optionTextCreation();
       }
 
       let createbtn = document.createElement("button");
       createbtn.innerHTML = "Create";
-      createbtn.style.margin = "20px";
+      createbtn.id = "createbutton";
       createcontainer.append(createbtn);
       createbtn.addEventListener("click", getFieldsValue);
     }
 
-    function optiontextcreation() {
+    function optionTextCreation() {
       let addbtn = document.createElement("button");
-      addbtn.style.marginTop = "15px";
+      addbtn.id = "addbutton";
       addbtn.innerHTML = "Add Options";
 
       fieldcontainer.append(addbtn);
@@ -186,9 +208,9 @@
 
       myobject.push(inputattribute);
       console.log(myobject);
-      createfield();
+      createField();
     }
-    function createfield() {
+    function createField() {
       submitcontainer.innerHTML = "";
       let name = document.getElementById("name").value;
       let id = document.getElementById("id").value;
@@ -204,7 +226,7 @@
         selectedvalue == "checkbox"
       ) {
         inputcontainer.append(document.createElement("br"));
-        optioncreation();
+        optionCreation();
       } else {
         let newinput = document.createElement("input");
 
@@ -220,11 +242,11 @@
       let subbtn = document.createElement("button");
       subbtn.innerHTML = "Submit";
       subbtn.style.margin = "20px";
-      subbtn.addEventListener("click", createtable);
+      subbtn.addEventListener("click", createTable);
       submitcontainer.append(subbtn);
     }
 
-    function optioncreation() {
+    function optionCreation() {
       if (selectedvalue == "radio" || selectedvalue == "checkbox") {
         const name = document.getElementById("name").value;
 
@@ -261,7 +283,7 @@
       document.getElementById("optioncontainer").innerHTML = "";
     }
 
-    function clearfields() {
+    function clearFields() {
       let input = inputcontainer.children;
 
       for (let i = 0; i < input.length; i++) {
@@ -276,7 +298,7 @@
       }
     }
 
-    function createtable() {
+    function createTable() {
       table.innerHTML = "";
       tbody.innerHTML = "";
       let thead = document.createElement("thead");
@@ -284,7 +306,6 @@
         let th = document.createElement("th");
 
         th.innerHTML = myobject[i].name;
-        th.style.border = "1px solid black";
         thead.append(th);
         table.append(thead);
         table.append(tbody);
@@ -295,10 +316,11 @@
       thead.append(th1);
       displaytable.append(table);
 
-      triggertable();
-      clearfields();
+      triggerTable();
+      clearFields();
     }
-    function triggertable() {
+
+    function triggerTable() {
       let inputdata = {};
       let val = "";
       for (i = 0; i < myobject.length; i++) {
@@ -346,32 +368,33 @@
         const keys = Object.keys(main[i]);
         for (let j = 0; j < keys.length; j++) {
           let td = document.createElement("td");
-          td.style.border = "1px solid black";
+          // td.style.border = "1px solid black";
           td.innerHTML = main[i][keys[j]];
           tr.append(td);
           tbody.append(tr);
         }
         let editbtn = document.createElement("button");
+        editbtn.setAttribute("id", "editbutton");
         editbtn.innerHTML = "Edit";
-        editbtn.addEventListener("click", () => editrow(i));
+        editbtn.addEventListener("click", () => editRow(i));
         let deletebtn = document.createElement("button");
         deletebtn.innerHTML = "Delete";
-        deletebtn.addEventListener("click", () => deleterow(i, tr));
-        editbtn.style.marginRight = "5px";
+        deletebtn.addEventListener("click", () => deleteRow(i, tr));
         let td1 = document.createElement("td");
         td1.append(editbtn);
         td1.append(deletebtn);
         tr.append(td1);
       }
+
       table.append(tbody);
     }
 
-    function deleterow(ind, row) {
+    function deleteRow(ind, row) {
       main.splice(ind, 1);
       row.remove();
     }
 
-    function editrow(ind) {
+    function editRow(ind) {
       let editdata = main[ind];
       eindex = ind;
       for (let i = 0; i < myobject.length; i++) {
@@ -381,7 +404,7 @@
         if (type === "radio") {
           const radio = document.getElementsByName(name);
           for (let j = 0; j < radio.length; j++) {
-            if (radio[j].value === editdata[id]) {
+            if (radio[j].value === editdata[name]) {
               radio[j].checked = true;
             } else {
               radio[j].checked = false;
@@ -390,12 +413,7 @@
         } else if (type === "checkbox") {
           const checkbox = document.getElementsByName(name);
           for (let j = 0; j < checkbox.length; j++) {
-            let val = checkbox[j].value;
-            if (val.includes(editdata[id])) {
-              checkbox[j].checked = true;
-            } else {
-              checkbox[j].checked = false;
-            }
+            checkbox[j].checked = editdata[id].includes(checkbox[j].value);
           }
         } else if (type === "dropdown") {
           const dropdown = document.getElementById(id);
@@ -408,6 +426,6 @@
         }
       }
     }
-    createinput();
+    createInput();
   </script>
 </html>

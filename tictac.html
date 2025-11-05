@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac</title>
+
+    <style>
+        
+        
+      .maincontainer {
+        display: flex;
+        justify-content: center;
+        height: 650px;
+      }
+    
+      .tableclass {
+        height: 580px;
+        width: 600px;
+        border: 4px solid black;
+      }
+      .tdclass {
+        border: 10px solid rgb(205, 27, 27);
+        height:180px;
+        width:180px;
+        cursor: pointer;
+        
+      }
+       .trclass {
+        border: 10px solid rgb(205, 27, 27);
+       
+      }
+     
+      .player1{
+        color:blue;
+       
+
+      }
+      .player2{
+        color: red;
+      }
+
+      .common{
+        font-size: 140px;
+        text-align: center;
+      }
+
+      .resetbtn{
+        padding:10px 70px 10px 70px ;
+        font-size: 20px;
+        color: white;   
+        background-color:rgb(205, 27, 27); 
+        border-radius: 12px;
+ }
+ .resetbutton{
+    display: flex;
+    justify-content: center;
+ }
+ 
+    </style>
+  </head>
+  <body>
+    <div class="maincontainer">
+      <div id="submaincontainer"> </div>
+
+       
+      </div>
+      <div class="resetbutton">
+                <input type="button" class="resetbtn" value="Reset" onclick="resetGame()">
+
+        </div>
+    </div>
+  </body>
+  <script>
+
+       function createTable(){
+       let table=document.createElement('table');
+       let tbody=document.createElement('tbody');
+       table.className="table";
+
+       for(let i=0;i<3;i++){
+        let tr=document.createElement('tr');
+        tr.className='trclass';
+
+        for(let j=0;j<3;j++){
+
+          let td=document.createElement('td');
+           td.classList.add('tdclass','content')
+           tr.append(td);
+
+        }
+               tbody.append(tr);
+
+       }
+        table.append(tbody);
+       submaincontainer.append(table);
+       let contents=document.querySelectorAll('.content');
+           Tick(contents);
+
+       }
+
+    let turn=true;
+
+     function Tick(contents){
+  
+    for(i=0;i<contents.length;i++){
+      let  content=contents[i];
+         content.id=`index${i+1}`;
+         
+        content.addEventListener("click",()=>{
+            if(content.innerHTML!==""){
+              return;
+            }
+
+           else if(turn){
+           content.innerHTML="o";
+           content.classList.add('common','player1');
+           turn=false;
+           }
+       
+            else{
+             content.innerHTML="x";
+           content.classList.add('common','player2');
+             turn=true;
+           }
+           checkWinner(contents);
+        });
+       
+    }
+  }
+   
+
+    function checkWinner(contents){
+      let board=[];
+      for(let i=0;i<contents.length;i++){
+        board.push(contents[i].innerHTML);
+      }
+
+      let combo=[
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ]
+      for(let i=0;i<combo.length;i++){
+        let[a,b,c]=combo[i];
+        if(board[a]&&board[a]===board[b]&&board[a]===board[c]){
+          alert(board[a]+"  Wins");
+          resetGame(contents);
+        }
+
+      }
+    let fill=true;
+    for(let i=0;i<board.length;i++){
+      if(board[i]===""){
+        fill=false;
+      }
+    }
+    if(fill){
+      alert("Draw");
+      resetGame(contents);
+
+    }
+    }
+    
+   
+    function resetGame(contents){
+
+         for(i=0;i<contents.length;i++){
+      let  content=contents[i];
+      content.innerHTML="";
+      content.classList.remove('player1','player2','common');
+         }
+         turn=true;
+        
+    }
+   createTable();
+  </script>
+</html>
+
+
